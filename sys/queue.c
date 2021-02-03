@@ -1,8 +1,4 @@
 #include "driver.h"
-// #include <>
-// #include <dos.h>
-// #include <random>
-// #include <ctime>
 
 #ifdef ALLOC_PRAGMA
 #pragma alloc_text (PAGE, PortIOQueueInitialize)
@@ -26,8 +22,8 @@ PortIOQueueInitialize(
 
     WDF_IO_QUEUE_CONFIG_INIT_DEFAULT_QUEUE(
         &queueConfig,
-        WdfIoQueueDispatchParallel
-        // WdfIoQueueDispatchSequential
+        // WdfIoQueueDispatchParallel
+        WdfIoQueueDispatchSequential
         );
 
     queueConfig.EvtIoRead = PortIOEvtAsynchRead;
@@ -363,20 +359,12 @@ PortIOEvtAsynchRead(
 
     KdPrint(("PortIOEvtAsynchRead started\n"));
 
-    // srand(time(0));
-    // Sleep(2000);
     status = WdfRequestRetrieveOutputBuffer(
         Request,
         sizeof(UCHAR),
         &((PVOID)outputBuffer),
         NULL);
 
-    // __asm { //проверка готовности данных
-    //     mov dx, 0x3f8; //перемещаемся по адресу СОМ-1
-    //     add dx, 5; //смещаемся на регистр состояния линии
-    //     in al, dx; // считываем данные 
-    //     mov check, al; // перемещаем их в переменную check
-    // }
     for (i = 0; i < 2500000; ++i)
     {
         check = READ_PORT_UCHAR((PUCHAR)(portBase + 5));
@@ -394,11 +382,6 @@ PortIOEvtAsynchRead(
         return;
     }
 
-    // __asm { // чтение данных из порта
-    //     mov dx, 0x3f8; // перемещаемся по адресу СОМ-1
-    //     in al, dx; // считываем данные
-    //     mov outputResult, al; // записываем их в переменную
-    // }
     outputResult = READ_PORT_UCHAR((PUCHAR)(portBase));
 
     KdPrint(("Symbol: %c \n", outputResult));
@@ -407,6 +390,5 @@ PortIOEvtAsynchRead(
     dataBufferSize = sizeof(UCHAR);
 
     WdfRequestCompleteWithInformation(Request, status, dataBufferSize);
-    // printf("read operation completed");
     return;
 }
