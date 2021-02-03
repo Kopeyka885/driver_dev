@@ -1,0 +1,16 @@
+
+
+386_OBJECTS=\
+ $(OBJ_PATH)\$O\gpdread.obj \
+
+
+
+
+
+# lowercased
+BASEDIR=c:\winddk\7600.16385.0
+OBJECT_ROOT=c:\winddk\7600.16385.0
+MAKEDIR_LOWERCASE=e:\driver_development\var6\gpdread
+OBJ_PATH=e:\driver_development\var6\gpdread
+CONCURRENT_MIDL=0
+CONCURRENT_MANIFEST_BUILD=0
